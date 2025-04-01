@@ -1,8 +1,51 @@
 import React from "react";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography, Paper, Card, CardContent, CardActionArea, useTheme } from "@mui/material";
 import BoxComponent from "../Common/BoxComponent";
+import { useAuth } from "../../context/AuthContext";
+
+interface DashboardItem {
+  title: string;
+  icon: string;
+  description: string;
+}
 
 const Dashboard: React.FC = () => {
+  const theme = useTheme();
+  const { user } = useAuth();
+
+  const dashboardItemsAdmin: DashboardItem[] = [
+    {
+      title: "Create A Request",
+      icon: "📝",
+      description: "Submit a new request for assistance",
+    },
+    {
+      title: "View Requests",
+      icon: "📋",
+      description: "View All Requests",
+    },
+    {
+      title: "Manage Site",
+      icon: "⚙️",
+      description: "Administrative tools and settings",
+    }
+  ];
+
+  const dashboardItemsRequestor: DashboardItem[] = [
+    {
+      title: "Create A Request",
+      icon: "📝",
+      description: "Submit a new request for assistance",
+    },
+    {
+      title: "View Requests",
+      icon: "📋",
+      description: "Check status of your requests",
+    }
+  ];
+
+  const dashboardItems = user?.admin_user ? dashboardItemsAdmin : dashboardItemsRequestor;
+
   return (
     <Box
       sx={{
@@ -12,89 +55,87 @@ const Dashboard: React.FC = () => {
         padding: "20px",
       }}
     >
-      {/* Header Text */}
-      <Typography
-        variant="h4"
-        align="center"
+      <Paper
+        elevation={0}
         sx={{
-          fontWeight: 700,
-          color: "#333",
-          marginBottom: 4,
-          marginTop: 4,
+          p: 4,
+          background: "transparent",
+          mb: 4,
+          borderRadius: 2,
         }}
       >
-        I would like to...
-      </Typography>
+        <Typography
+          variant="h4"
+          sx={{
+            fontWeight: 700,
+            mb: 1,
+          }}
+        >
+          Welcome back, {user?.first_name}!
+        </Typography>
+        <Typography variant="subtitle1" sx={{ opacity: 0.9 }}>
+          Here's what you can do today
+        </Typography>
+      </Paper>
 
-      {/* Grid Container */}
+      {/* Dashboard Grid */}
       <Grid
         container
-        spacing={20}
+        spacing={3}
         justifyContent="center"
         alignItems="stretch"
       >
-        {/* Create a Request */}
-        <Grid item xs={12} sm={6} md={3}>
-          <BoxComponent>
-            <Typography
-              variant="h4"
-              align="center"
+        {dashboardItems.map((item: DashboardItem, index: number) => (
+          <Grid item xs={12} sm={6} md={4} key={index}>
+            <Card
               sx={{
-                fontWeight: 600,
-                color: "#333",
-                marginBottom: 2,
-                marginTop: 2,
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                transition: "transform 0.2s, box-shadow 0.2s",
+                "&:hover": {
+                  transform: "translateY(-4px)",
+                  boxShadow: 3,
+                },
+                borderRadius: 2,
+                borderTop: '4px solid #b851e8',
               }}
             >
-              Create A Request
-            </Typography>
-            <Typography variant="h4" align="center">
-              {String.fromCodePoint(0x1F4DD)}
-            </Typography>
-          </BoxComponent>
-        </Grid>
-
-        {/* View Requests */}
-        <Grid item xs={12} sm={6} md={3}>
-          <BoxComponent>
-            <Typography
-              variant="h5"
-              align="center"
-              sx={{
-                fontWeight: 600,
-                color: "#333",
-                marginBottom: 2,
-                marginTop: 2,
-              }}
-            >
-              View Requests 
-            </Typography>
-            <Typography variant="h4" align="center">
-              {String.fromCodePoint(0x1F5C4)}
-            </Typography>
-          </BoxComponent>
-        </Grid>
-
-        {/* Manage Site */}
-        <Grid item xs={12} sm={6} md={3}>
-          <BoxComponent>
-            <Typography
-              variant="h5"
-              align="center"
-              sx={{
-                fontWeight: 600,
-                color: "#333",
-                marginBottom: 2,
-                marginTop: 2,
-              }}
-            >
-              Manage Site 
-            </Typography>
-            <Typography variant="h4" align="center">
-              {String.fromCodePoint(0x1F6E0)}
-            </Typography>
-          </BoxComponent>
-        </Grid>
+              <CardActionArea sx={{ flexGrow: 1 }}>
+                <CardContent sx={{ textAlign: "center", p: 3 }}>
+                  <Typography
+                    variant="h1"
+                    sx={{
+                      fontSize: "3.5rem",
+                      mb: 2,
+                      lineHeight: 1,
+                    }}
+                  >
+                    {item.icon}
+                  </Typography>
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      fontWeight: 600,
+                      color: theme.palette.text.primary,
+                      mb: 1,
+                    }}
+                  >
+                    {item.title}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: theme.palette.text.secondary,
+                    }}
+                  >
+                    {item.description}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Grid>
+        ))}
       </Grid>
     </Box>
   );

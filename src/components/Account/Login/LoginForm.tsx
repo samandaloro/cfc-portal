@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import { Typography, Alert } from "@mui/material";
 import "../AuthStyle.css";
 import InfoAlertComponent from "../../Common/InfoAlertComponent";
+import { useAuth } from "../../../context/AuthContext";
 
 interface LoginValues {
     username: string;
@@ -17,38 +18,9 @@ const initialValues: LoginValues = {
     password: "",
 };
 
-const login = async (values: LoginValues, setError: (error: string) => void) => {
-    try {
-        const response = await fetch("http://127.0.0.1:8000/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(values),
-        });
-
-        if (!response.ok) {
-            const responseData = await response.json();
-            const errorMessage = responseData.message;
-            setError(errorMessage);
-            throw new Error(errorMessage);
-        }
-        console.log("Login successful");
-        console.log("Response:", response.json());
-        setError("");
-    } catch (error) {
-        console.error("Login error:", error);
-    }
-};
-
-const ValidationSchema = Yup.object({
-    username: Yup.string().required("Required"),
-    password: Yup.string().required("Required"),
-});
-
 const LoginForm: React.FC = () => {
-    const [error, setError] = useState<string>("");
     const [forgotPasswordMessage, setForgotPasswordMessage] = useState<string>("");
+    const { login, error } = useAuth();
 
     const handleForgotPasswordClick = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -58,7 +30,15 @@ const LoginForm: React.FC = () => {
         else {
             setForgotPasswordMessage("");
         }
-        
+    };
+
+    const handleSubmit = async (values: LoginValues) => {
+        try {
+            await login(values.username, values.password);
+        } catch (err) {
+            // Error is handled by the auth context
+            console.error("Login error:", err);
+        }
     };
 
     return (
@@ -77,7 +57,7 @@ const LoginForm: React.FC = () => {
             </Typography>
             <Formik
                 initialValues={initialValues}
-                onSubmit={(values) => login(values, setError)}
+                onSubmit={handleSubmit}
                 validationSchema={ValidationSchema}
             >
                 {({ isSubmitting }) => (
@@ -132,5 +112,10 @@ const LoginForm: React.FC = () => {
         </div>
     );
 };
+
+const ValidationSchema = Yup.object({
+    username: Yup.string().required("Required"),
+    password: Yup.string().required("Required"),
+});
 
 export default LoginForm;
