@@ -10,14 +10,13 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { useAuth } from "../../context/AuthContext";
 
 const pages = ["Donate", "Upcoming Events"];
 
 function ResponsiveAppBar() {
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
-  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const { isAuthenticated, logout } = useAuth();
 
   const authenticatedSettings = ["Account", "Logout"];
 
@@ -31,7 +30,7 @@ function ResponsiveAppBar() {
 
   const handleLogout = () => {
     console.log("User logged out");
-    setIsAuthenticated(false);
+    logout();
     handleCloseUserMenu();
   };
 
@@ -140,7 +139,6 @@ function ResponsiveAppBar() {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={() => setIsAuthenticated(true)}
                 sx={{
                   backgroundColor: "transparent",
                   border: "none",
