@@ -7,6 +7,10 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 import Footer from './components/Home/Footer';
 import Dashboard from './components/Dashboard/Dashboard';
+import CreateRequest from './components/Dashboard/CreateRequest';
+import ViewRequests from './components/Dashboard/ViewRequests';
+import ManageSite from './components/Dashboard/ManageSite';
+import RequestHistory from './components/Dashboard/RequestHistory';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
@@ -26,6 +30,22 @@ function AppContent() {
             <Route 
               path="/dashboard" 
               element={isAuthenticated ? <Dashboard /> : <Navigate to="/" />} 
+            />
+            <Route 
+              path="/dashboard/create-request" 
+              element={isAuthenticated ? <CreateRequest /> : <Navigate to="/" />} 
+            />
+            <Route 
+              path="/dashboard/view-requests" 
+              element={isAuthenticated ? <ViewRequests /> : <Navigate to="/" />} 
+            />
+            <Route 
+              path="/dashboard/manage-site" 
+              element={isAuthenticated ? <ManageSite /> : <Navigate to="/" />} 
+            />
+            <Route 
+              path="/dashboard/request-history" 
+              element={isAuthenticated ? <RequestHistory /> : <Navigate to="/" />} 
             />
           </Routes>
           <Footer />

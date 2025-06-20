@@ -73,7 +73,8 @@ function ResponsiveAppBar() {
                   display: "block",
                   fontWeight: 600,
                   textTransform: "none",
-                  marginRight:"10px"
+                  marginRight:"10px",
+                  "&:hover": { backgroundColor: "transparent" },
                 }}
               >
                Donate {String.fromCodePoint(0x1F381)}
@@ -86,14 +87,14 @@ function ResponsiveAppBar() {
                   display: "block",
                   fontWeight: 600,
                   textTransform: "none",
-                  marginLeft:"10px"
+                  marginLeft:"10px",
+                  "&:hover": { backgroundColor: "transparent" },
                 }}
               >
                Upcoming Events {String.fromCodePoint(0x1F389)}
               </Button>
           </Box>
 
-          {/* Authenticated User - Avatar and Menu */}
           <Box sx={{ flexGrow: 0 }}>
             {isAuthenticated ? (
               <>
@@ -135,7 +136,6 @@ function ResponsiveAppBar() {
                 </Menu>
               </>
             ) : (
-              // Show "Get Started" button when not authenticated
               <Button
                 variant="contained"
                 color="primary"
@@ -143,7 +143,7 @@ function ResponsiveAppBar() {
                   backgroundColor: "transparent",
                   border: "none",
                   boxShadow: "none",
-                  "&:hover": { backgroundColor: "#8EE5F0" },
+                  "&:hover": { backgroundColor: "transparent" },
                 }}
               >
                 <Typography

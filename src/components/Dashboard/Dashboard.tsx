@@ -1,33 +1,38 @@
 import React from "react";
 import { Box, Grid, Typography, Paper, Card, CardContent, CardActionArea, useTheme } from "@mui/material";
-import BoxComponent from "../Common/BoxComponent";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
 interface DashboardItem {
   title: string;
   icon: string;
   description: string;
+  path: string;
 }
 
 const Dashboard: React.FC = () => {
   const theme = useTheme();
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const dashboardItemsAdmin: DashboardItem[] = [
     {
       title: "Create A Request",
       icon: "📝",
-      description: "Submit a new request for assistance",
+      description: "As an admin user, requests you submit will be marked as test requests.",
+      path: "/dashboard/create-request"
     },
     {
       title: "View Requests",
       icon: "📋",
       description: "View All Requests",
+      path: "/dashboard/view-requests"
     },
     {
       title: "Manage Site",
       icon: "⚙️",
-      description: "Administrative tools and settings",
+      description: "Site settings, user management, and more.",
+      path: "/dashboard/manage-site"
     }
   ];
 
@@ -36,11 +41,13 @@ const Dashboard: React.FC = () => {
       title: "Create A Request",
       icon: "📝",
       description: "Submit a new request for assistance",
+      path: "/dashboard/create-request"
     },
     {
-      title: "View Requests",
+      title: "Request History",
       icon: "📋",
       description: "Check status of your requests",
+      path: "/dashboard/request-history"
     }
   ];
 
@@ -99,7 +106,9 @@ const Dashboard: React.FC = () => {
                 },
                 borderRadius: 2,
                 borderTop: '4px solid #b851e8',
+                cursor: 'pointer'
               }}
+              onClick={() => navigate(item.path)}
             >
               <CardActionArea sx={{ flexGrow: 1 }}>
                 <CardContent sx={{ textAlign: "center", p: 3 }}>
